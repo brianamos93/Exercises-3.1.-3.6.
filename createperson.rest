@@ -1,0 +1,7 @@
+POST https://3001-brianamos93-exercises31-59tfz6qnppx.ws-us47.gitpod.io/api/persons
+Content-Type: application/json
+
+{
+      "name": "Brian Amos", 
+      "number": "080-123456"
+}
