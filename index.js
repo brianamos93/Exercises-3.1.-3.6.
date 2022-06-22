@@ -40,6 +40,13 @@ app.get('/api/persons/:id', (request, response) => {
     response.json(data)
   })
 
+  app.get('/info', (request, response) => {
+    const numofentries = Object.keys(data).length;
+    const date = new Date();
+    const dateUTC = date.toLocaleDateString("en-US");
+    response.send(`Phonebook has info for ${numofentries} people. ${dateUTC}`)
+  })
+
   app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     persons = data.filter(person => person.id !== id)
