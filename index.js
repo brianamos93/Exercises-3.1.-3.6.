@@ -1,7 +1,9 @@
 const express = require('express')
 const app = express()
+const morgan = require('morgan')
 
 app.use(express.json())
+
 
 let data = [
     { 
@@ -55,30 +57,43 @@ app.get('/api/persons/:id', (request, response) => {
   })
   
   const generateId = () => {
-    const maxId = notes.length > 0
-      ? Math.max(...notes.map(n => n.id))
+    const ranId = data.length > 0
+      ? Math.round(Math.random() * 10000)
       : 0
-    return maxId + 1
+    return ranId + 1
   }
   
   app.post('/api/persons', (request, response) => {
     const body = request.body
   console.log(body)
-    if (!body.content) {
+    if (!body.name) {
       return response.status(400).json({ 
-        error: 'content missing' 
+        error: 'name is missing' 
       })
-    }
-  
+    } else if (!body.number) {
+      return response.status(400).json({
+        error: 'number is missing'
+      })
+    } else if (data.some(e => e = body.name)) {
+      console.log(body.name)
+      console.log(data.some(e => e = body.name))
+      return response.status(400).json({
+        error: 'name is a duplicate'
+    })
+  } else {
     const person = {
-        name: body.name,
-        number: body.number,
-      id: generateId(),
-    }
+    name: body.name,
+    number: body.number,
+    id: generateId(),
+  }
+
+  data = data.concat(person)
+
+  response.json(person)
+  }
+    
   
-    data = data.concat(person)
   
-    response.json(person)
   })
 
   const PORT = 3001
